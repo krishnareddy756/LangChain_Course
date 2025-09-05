@@ -1,7 +1,7 @@
 import asyncio
 
 from agent import QueueCallbackHandler, agent_executor
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -43,7 +43,7 @@ async def token_generator(content: str, streamer: QueueCallbackHandler):
 
 # invoke function
 @app.post("/invoke")
-async def invoke(content: str):
+async def invoke(content: str = Form()):
     queue: asyncio.Queue = asyncio.Queue()
     streamer = QueueCallbackHandler(queue)
     # return the streaming response

@@ -1,6 +1,20 @@
 import asyncio
 import aiohttp
 import os
+from pathlib import Path
+
+# Load environment variables from .env file
+env_file = Path(__file__).parent.parent.parent.parent / '.env'
+print(f"Looking for .env file at: {env_file}")
+print(f"File exists: {env_file.exists()}")
+if env_file.exists():
+    with open(env_file) as f:
+        for line in f:
+            line = line.strip()
+            if '=' in line and not line.startswith('#') and line:
+                key, value = line.split('=', 1)
+                os.environ[key] = value
+                print(f"Set {key} = {value[:10]}...")
 
 from langchain.callbacks.base import AsyncCallbackHandler
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
