@@ -46,9 +46,9 @@ const TextArea = ({
     setIsGenerating(true);
 
     try {
-      // Replace 'YOUR_BACKEND_URL' with your actual backend URL once deployed
+      // Using deployed Render API URL
       const apiUrl = process.env.NODE_ENV === 'production' 
-        ? 'https://your-backend-url.railway.app/invoke'  // Update this with your backend URL
+        ? 'https://langchain-chatbot-5gvk.onrender.com/invoke'  // Your deployed Render API
         : 'http://localhost:8000/invoke';  // Local development
       
       const res = await fetch(apiUrl, {
