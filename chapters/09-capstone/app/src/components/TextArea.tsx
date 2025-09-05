@@ -46,8 +46,9 @@ const TextArea = ({
     setIsGenerating(true);
 
     try {
+      // Replace 'YOUR_BACKEND_URL' with your actual backend URL once deployed
       const apiUrl = process.env.NODE_ENV === 'production' 
-        ? '/api/invoke'  // Vercel serverless function
+        ? 'https://your-backend-url.railway.app/invoke'  // Update this with your backend URL
         : 'http://localhost:8000/invoke';  // Local development
       
       const res = await fetch(apiUrl, {
