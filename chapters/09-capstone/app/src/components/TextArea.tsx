@@ -46,7 +46,11 @@ const TextArea = ({
     setIsGenerating(true);
 
     try {
-      const res = await fetch("http://localhost:8000/invoke", {
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? '/api/invoke'  // Vercel serverless function
+        : 'http://localhost:8000/invoke';  // Local development
+      
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
