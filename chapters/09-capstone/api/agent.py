@@ -3,11 +3,13 @@ import aiohttp
 import os
 from pathlib import Path
 
-# Load environment variables from .env file
+# Load environment variables - works for both local development and production
 env_file = Path(__file__).parent.parent.parent.parent / '.env'
 print(f"Looking for .env file at: {env_file}")
 print(f"File exists: {env_file.exists()}")
+
 if env_file.exists():
+    # Local development - load from .env file
     with open(env_file) as f:
         for line in f:
             line = line.strip()
@@ -15,6 +17,22 @@ if env_file.exists():
                 key, value = line.split('=', 1)
                 os.environ[key] = value
                 print(f"Set {key} = {value[:10]}...")
+else:
+    # Production - environment variables should already be set by the platform
+    print("No .env file found, using platform environment variables")
+
+# Verify environment variables are available
+required_env_vars = ["OPENAI_API_KEY", "SERPAPI_API_KEY"]
+missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
+
+if missing_vars:
+    print(f"ERROR: Missing environment variables: {missing_vars}")
+    print("Available environment variables:")
+    for key in os.environ.keys():
+        if any(x in key.upper() for x in ["API", "KEY", "TOKEN"]):
+            print(f"  {key} = {os.environ[key][:10]}...")
+else:
+    print("All required environment variables are available")
 
 from langchain.callbacks.base import AsyncCallbackHandler
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
